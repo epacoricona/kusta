@@ -1,0 +1,15 @@
+package com.example.rules
+import micro.desafio.kusta.domain.entity.DataSourceRepository;
+
+rule "Select Data Repository"
+when
+   datasource : DataSourceRepository();
+then
+if (datasource.getDataSource().equalsIgnoreCase("persona")) {
+	          datasource.setRepository("RepositoryPersona");
+	  
+ } else if (datasource.getDataSource().equalsIgnoreCase("animal")) {
+     	       datasource.setRepository("RepositoryAnimal");     
+ } 
+ 
+end;
