@@ -1,5 +1,3 @@
-¡Claro! Aquí está el archivo **README.md** formateado para el proyecto **Kusta**:
-
 # Kusta: Documentación del Microservicio
 
 Este README proporciona una descripción general del proyecto, incluyendo sus características, tecnologías utilizadas, instrucciones de instalación y ejecución, detalles sobre contribuciones y licencia. Puedes personalizar este archivo según las necesidades específicas del proyecto.
