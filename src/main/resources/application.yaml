@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: kusta
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/spring-boot
+          
+resilience4j.circuitbreaker:
+    instances:
+        kustaCB:
+            registerHealthIndicator: true
+            slidingWindowSize: 10
+            permittedNumberOfCallsInHalfOpenState: 3
+            slidingWindowType: TIME_BASED
+            minimumNumberOfCalls: 5
+            waitDurationInOpenState: 50s
+            failureRateThreshold: 50
+            eventConsumerBufferSize: 10
+            
+resilience4j.retry:
+    instances:
+        kustaCB:
+            maxAttempts: 5
+            waitDuration: 10s
