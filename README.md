@@ -127,4 +127,5 @@ Antes de ejecutar Kusta, asegúrate de tener instalado lo siguiente:
 - Se creó un archivo `rules.drl` con una regla básica, la cual recibe un parámetro de entrada, ejecuta una lógica de negocio y retorna un valor.
 
 1. **Elección de fuente de datos:**
-    - GET `http://localhost:8080/api/decision/{source}`  ---  SOURCE = ANIMAL O PERSONA
+    - GET `http://localhost:8080/api/decision/{source}`
+    - source: PERSONA o ANIMAL
