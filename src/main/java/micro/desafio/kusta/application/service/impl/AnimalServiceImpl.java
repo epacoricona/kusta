@@ -1,10 +1,16 @@
 package micro.desafio.kusta.application.service.impl;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.MongoException;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import micro.desafio.kusta.application.service.IAnimalService;
 import micro.desafio.kusta.domain.entity.Animal;
 import micro.desafio.kusta.infrastructure.exception.DatabaseConnectionException;
@@ -18,16 +24,19 @@ public class AnimalServiceImpl implements IAnimalService {
 
 	@Autowired
 	private IAnimalRepository repository;
-
+	
 	@Override
+	@CircuitBreaker(name= "kustaCB" , fallbackMethod = "fallBackFindAll")
+	@Retry(name = "kustaCB")
 	public Flux<Animal> findAll() {
 		// TODO Auto-generated method stub
-		return repository.findAll().switchIfEmpty(Mono.error(new ResourceNotFoundException("Personas no encontradas")))
+		return repository.findAll()
 				.onErrorMap(e -> new DatabaseConnectionException("Error de conexión con MongoDB"));
-
 	}
-
+	
 	@Override
+	@CircuitBreaker(name= "kustaCB" , fallbackMethod = "fallBackFindById")
+	@Retry(name = "kustaCB")
 	public Mono<Animal> findById(String id) {
 		// TODO Auto-generated method stub
 		return repository.findById(id)
@@ -35,31 +44,50 @@ public class AnimalServiceImpl implements IAnimalService {
 				.onErrorMap(e -> new DatabaseConnectionException("Error de conexión con MongoDB"));
 
 	}
-
-	@Override
+	
+	@Override	
+	@CircuitBreaker(name= "kustaCB" , fallbackMethod = "fallBackSave")
+	@Retry(name = "kustaCB")
 	public Mono<Animal> save(Animal entity) {
 		// TODO Auto-generated method stub
 		return repository.save(entity)
 				.onErrorMap(e -> new DatabaseConnectionException("Error de conexión con MongoDB"));
-
 	}
-
 	@Override
+	@CircuitBreaker(name= "kustaCB" , fallbackMethod = "fallBackUpdate")
+	@Retry(name = "kustaCB")
 	public Mono<Animal> update(Animal entity) {
 		// TODO Auto-generated method stub
 		return repository.save(entity)
 				.onErrorMap(e -> new DatabaseConnectionException("Error de conexión con MongoDB"));
 
 	}
-
 	@Override
+	@CircuitBreaker(name= "kustaCB" , fallbackMethod = "fallBackDelete")
+	@Retry(name = "kustaCB")
 	public Mono<Void> delete(Animal entity) {
 		// TODO Auto-generated method stub
 		return repository.delete(entity)
-				.switchIfEmpty(
-						Mono.error(new ResourceNotFoundException("Animal no encontrado con id: " + entity.getId())))
 				.onErrorMap(e -> new DatabaseConnectionException("Error de conexión con MongoDB"));
 
 	}
-
+	private Flux<Animal> fallBackFindAll() {
+        return Flux.empty();
+	}
+	
+	private Mono<Animal> fallBackFindById() {
+        return Mono.empty();
+	}
+	
+	private Mono<Animal> fallBackSave() {
+        return Mono.empty();
+	}
+	
+	private Mono<Animal> fallBackUpdate() {
+        return Mono.empty();
+	}
+	
+	private Mono<Void>  fallBackDelete() {
+        return Mono.empty();
+	}
 }
