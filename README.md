@@ -67,9 +67,9 @@ Antes de ejecutar Kusta, asegúrate de tener instalado lo siguiente:
    - Cuerpo de la solicitud (JSON):
      ```json
      {
+         "id": 4
          "name": "Fido",
-         "species": "Dog",
-         "age": 4
+         "especie": "Dog",
      }
      ```
    - Sustituye `{id}` con el ID del animal que deseas actualizar.
